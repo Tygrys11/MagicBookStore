@@ -1,0 +1,330 @@
+.container {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 1.5rem;
+    color: #ffd700; /* Złoty */
+    min-height: 100vh;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-shadow: 0px 0px 10px rgba(255, 215, 0, 0.8);
+  }
+  
+  /* Adjusted Books Grid */
+  .booksGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  /* Book Card */
+  .bookCard {
+    background: rgba(247, 0, 255, 0.1);
+    border: 2px solid rgb(62, 62, 0);
+    border-radius: 12px;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 390px; /* Wymuszona stała wysokość */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* Hover Effects for Book Card */
+  .bookCard:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 15px rgba(255, 215, 0, 0.6);
+    /* cursor: pointer; */
+  }
+  
+  .bookImage {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+  }
+  
+  /* Additional styling for buttons in the BookCard */
+  .bookInfo {
+    padding: 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+  
+  .buttonRow {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+  
+/* Icon Buttons - Koszyk i serce */
+.iconButton {
+    background-color: #ffd700;
+    border-radius: 50%;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .iconButton:hover {
+    background-color: #ffcc00;
+    transform: scale(1.1); 
+  }
+  
+  .iconButton svg {
+    color: #2a0845; 
+    font-size: 1.5rem;
+    transition: color 0.3s ease; 
+  }
+  
+  /* Koszyk (ikona) */
+  .cartButton {
+    background-color: #ffd700;
+  }
+  
+  .cartButton:hover {
+    background-color: #ffcc00;
+  }
+  
+  .cartButton svg {
+    color: #2a0845; 
+  }
+  
+  .cartButton:hover svg {
+    color: white; 
+  }
+  
+  /* Polubienia (ikona serca) */
+  .likeButton {
+    background-color: #ff007f;
+  }
+  
+  .likeButton:hover {
+    background-color: #ff3399;
+  }
+  
+  .likeButton svg {
+    color: #2a0845; 
+  }
+  
+  .likeButton:hover svg {
+    color: rgb(115, 0, 0); 
+  }
+  
+
+  /* Title Styling - New Magic Effect */
+  .bookTitle {
+    font-size: 1.1rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #ff00fb;
+    position: relative;
+    text-shadow: 0 0 10px rgba(187, 0, 255, 0.9), 0 0 20px rgba(247, 0, 255, 0.7), 0 0 30px rgba(255, 215, 0, 0.5);
+    animation: glow 1.5s ease-in-out infinite alternate;
+  }
+  
+  .bookAuthor {
+    font-size: 0.9rem;
+    color: rgba(255, 215, 0, 0.8);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 0.5rem;
+  }
+  
+  /* Pagination Styling */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  
+  .button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .button:disabled {
+    background: rgba(255, 215, 0, 0.4);
+    cursor: not-allowed;
+  }
+  
+  .buttonPrev,
+  .buttonNext {
+    background: #ffd700;
+    color: #2a0845;
+  }
+  
+  .buttonPrev:hover,
+  .buttonNext:hover {
+    background: #ffcc00;
+  }
+  
+
+  /* Pole do wpisania numeru strony */
+.pageInput {
+    width: 60px;
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #ffd700;
+    font-size: 1rem;
+    text-align: center;
+    background-color: transparent;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .pageInput:focus {
+    outline: none;
+    background-color: #000000;
+    color: white;
+  }
+  
+  .pageInput::-webkit-outer-spin-button,
+  .pageInput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(18, 0, 29, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;  
+    box-sizing: border-box; 
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+  }
+
+  .modalContent {
+    background-color: rgb(63, 0, 77);
+    border: 1px solid yellow;
+    box-shadow: 0 0 15px yellow;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    color: rgb(255, 0, 255);
+    font-weight: bold;
+    font-size: 25px;
+    max-width: 500px;
+    width: 100%;
+    box-sizing: border-box; 
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .wizardImg {
+    width: 100%;
+    height: auto;
+    max-width: 250px;  
+    max-height: 250px; 
+    object-fit: contain;
+    margin-bottom: 20px;
+  }
+  
+  .modalButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-size: 15px;
+    transition: all 0.5s ease-in-out;
+    width: 100%;  
+    gap: 10px;
+  }
+  
+  .modalButton {
+    padding: 10px 20px;
+    background-color: #ffd500;
+    color: black;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex-grow: 1;
+  }
+  
+  .modalButton:hover {
+    background-color: #fff201;
+    box-shadow: 0 0 20px rgb(255, 0, 255);
+    transform: scale(1.1);
+  }
+  
+  @media (max-width: 768px) {
+    .modalContent {
+      padding: 20px;
+      font-size: 20px;
+    }
+  
+    .wizardImg {
+      max-width: 200px;
+      max-height: 200px;
+    }
+  
+    .modalButtons {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .modalButton {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .modalContent {
+      padding: 15px;
+      font-size: 18px; 
+    }
+  
+    .wizardImg {
+      max-width: 150px;
+      max-height: 150px; 
+    }
+  
+    .modalButton {
+      width: 100%; 
+      font-size: 14px; 
+    }
+  }
+  

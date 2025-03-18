@@ -1,0 +1,10 @@
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50px;
+    gap: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+}

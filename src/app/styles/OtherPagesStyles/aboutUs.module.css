@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Lora:wght@400;700&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&family=Roboto:wght@300;400;700&display=swap');
+
+.container {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.title {
+    color: rgb(255, 234, 0);
+    text-align: center;
+    font-size: 2.5em;
+    font-weight: bold;
+    font-family: 'Lora';
+    text-shadow: 0 0 12px rgb(255, 0, 255);
+    margin-bottom: 20px;
+  }
+
+.contents {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.Info {
+    background: rgb(21, 0, 36);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgb(255, 208, 0);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .TitleInfo {
+    font-size: 22px;
+    font-weight: bold;
+    font-family: 'Lora';
+    margin-bottom: 5px;
+    color: #eacd2b;
+  }
+
+  @media (max-width: 768px) {
+    .contents{
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .hr {
+    width: 80%; 
+    max-width: 1600px; 
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+    height: 2px;
+    background: linear-gradient(to right, rgba(255, 234, 0, 0.8), rgba(170, 0, 170, 0.8), rgba(255, 234, 0, 0.8));
+    box-shadow: 0 0 10px rgba(255, 234, 0, 0.5); 
+    margin-bottom: 30px; 
+}
+
+.whyWeContainer {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 20px;
+    justify-items: center; 
+    margin: 20px auto; 
+    padding: 0 10px;
+    max-width: 1000px; 
+    width: 100%; 
+  }
+
+  .icones {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #150022;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    max-width: 300px;
+    width: 100%;
+  }
+  
+  .icones:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  .icon {
+    font-size: 3rem;
+    color: #ffff00;
+    margin-bottom: 15px;
+    transition: color 0.3s ease;
+  }
+  
+  .icones:hover .icon {
+    color: #ff00cc; 
+  }
+  
+  .titleIcon {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #555;
+    margin-top: 10px;
+    transition: color 0.3s ease;
+  }
+
+  .icones:hover .titleIcon {
+    color: #9821f3;
+  }
+  
+  @media (max-width: 1024px) {
+    .whyWeContainer {
+      grid-template-columns: repeat(2, 1fr); 
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .whyWeContainer {
+      grid-template-columns: 1fr; 
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .icones {
+      max-width: 100%; 
+      padding: 15px; 
+    }
+  }
+  
+
+
+  .container2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50px;
+    gap: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+}
+
+.text {
+    flex: 1;
+    max-width: 600px;
+}
+
+.text h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: rgb(170, 0, 170);
+    font-family: 'Lora';
+}
+
+.text p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #b1b1b1;
+}
+
+p.text2 {
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    letter-spacing: 2;
+    text-shadow: 0 0 5px purple;
+}
+
+.image {
+    flex: 1;
+    max-width: 300px;
+    box-shadow: 0 0 10px white;
+}
+
+.image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* MEDIA QUERIES - Ukrywanie obrazka na telefonach i tabletach */
+@media (max-width: 850px) {
+    .container2 {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .image {
+        display: none;
+    }
+}

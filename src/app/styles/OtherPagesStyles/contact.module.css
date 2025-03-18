@@ -1,0 +1,316 @@
+/* Importowanie czcionek */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Lora:wght@400;700&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&family=Roboto:wght@300;400;700&display=swap');
+
+/* Sekcja Admission */
+.admission {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px;
+    margin: 60px;
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.5), rgba(170, 0, 170, 0.3));
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(170, 0, 170, 0.7);
+}
+
+.hr {
+    width: 80%; 
+    max-width: 1600px; 
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+    height: 2px;
+    background: linear-gradient(to right, rgba(255, 234, 0, 0.8), rgba(170, 0, 170, 0.8), rgba(255, 234, 0, 0.8));
+    box-shadow: 0 0 10px rgba(255, 234, 0, 0.5); 
+    margin-bottom: 30px; 
+}
+
+
+@media (max-width: 850px) {
+    .hr {
+        width: 90%; 
+    }
+}
+
+@media (max-width: 500px) {
+    .hr {
+        width: 95%;
+    }
+}
+
+
+/* Nagłówek */
+.title {
+    color: rgb(255, 234, 0);
+    text-align: center;
+    font-size: 2.5em;
+    font-weight: bold;
+    font-family: 'Lora';
+    text-shadow: 0 0 12px rgb(255, 0, 255);
+    margin-bottom: 20px;
+}
+
+/* Opis główny */
+.maindescription {
+    padding: 30px;
+    color: rgb(218, 0, 218);
+    font-size: 1.1em;
+    font-family: 'Poppins';
+    text-shadow: 0 0 5px rgb(255, 217, 0);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Kontener dla obrazka i formularza */
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    margin-top: 50px;
+    padding: 20px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Sekcja obrazka */
+.image {
+    flex: 1;
+    max-width: 100%;
+    margin: 20px;
+    box-shadow: 0 0 15px rgb(115, 0, 255);
+    border: 2px solid purple;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+}
+
+.image:hover {
+    transform: scale(1.05);
+}
+
+.image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* Sekcja tekstowa */
+.text {
+    flex: 1;
+    max-width: 600px;
+}
+
+.text h4 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: rgb(255, 234, 0);
+    text-shadow: 0 0 5px rgb(255, 0, 255);
+}
+
+.text p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #b1b1b1;
+    margin-bottom: 25px;
+}
+
+/* Formularz kontaktowy */
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.formContainer label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: rgb(170, 0, 170);
+}
+
+.formContainer input {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: 2px solid #27114c;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: border-color 0.3s ease-in-out;
+    color: black;
+}
+
+.formContainer input:focus {
+    border-color: rgb(255, 234, 0);
+    outline: none;
+}
+
+.formContainer input[type="text"], .formContainer input[type="email"] {
+    margin-bottom: 20px;
+}
+
+.formContainer input[type="submit"] {
+    background-color: rgb(170, 0, 170);
+    color: white;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.formContainer input[type="submit"]:hover {
+    background-color: rgb(255, 234, 0);
+}
+
+.buttonSend
+{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.send {
+    background: linear-gradient(to right, rgba(36, 0, 55, 0.8), rgba(121, 0, 121, 0.8), rgba(36, 0, 55, 0.8));
+    border-bottom-right-radius: 20px;
+    border-top-left-radius: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid white;
+    box-shadow: 0 0 10px white;
+    transition: all 0.5s ease-in-out;
+}
+
+.send:hover {
+    border: 1px solid yellow;
+    box-shadow: 0 0 10px yellow;
+    transform: scale(1.1);
+}
+
+/* Media Queries dla responsywności */
+@media (max-width: 850px) {
+    .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .image {
+        max-width: 100%;
+        display: none;
+    }
+
+    .text {
+        max-width: 90%;
+    }
+
+    .maindescription {
+        font-size: 1.2em;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 500px) {
+    .title {
+        font-size: 2em;
+    }
+
+    .maindescription {
+        font-size: 1em;
+    }
+
+    .text h4 {
+        font-size: 1.5rem;
+    }
+
+    .container {
+        padding: 10px;
+    }
+}
+
+.locationContainer {
+    text-align: center;
+    padding: 40px 20px; /* 📱 Na telefonach odstęp od krawędzi */
+  }
+  
+  .locationTitle {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .locationBanner {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  
+  .locationBanner img {
+    width: 100%;
+    max-width: 900px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* 📏 Układ w dwóch kolumnach na większych ekranach */
+  .locationContent {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 🖥️ Dwie kolumny na komputerze */
+    gap: 20px;
+    justify-content: center;
+    align-items: stretch;
+    padding: 0 20px;
+    max-width: 900px;
+    margin: auto;
+  }
+  
+  /* 🏪 Styl sekcji */
+  .locationInfo {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .infoTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #6B21A8;
+  }
+  
+  .socialIcons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .socialIcons a {
+    color: #8B5CF6;
+    transition: color 0.3s ease;
+  }
+  
+  .socialIcons a:hover {
+    color: #4C1D95;
+  }
+  
+  /* 📱 Na małych ekranach zmiana na jedną kolumnę */
+  @media (max-width: 768px) {
+    .locationContent {
+      grid-template-columns: 1fr;
+    }
+  }
+  

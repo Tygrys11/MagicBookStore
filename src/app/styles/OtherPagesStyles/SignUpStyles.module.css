@@ -1,0 +1,154 @@
+/* Resetowanie stylów */
+.fullBox {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Kontener główny */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background: url('/assets/ciemnetlo2.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+}
+
+/* Główna sekcja */
+.signUpBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(170, 0, 255, 0.7);
+    background-color: black;
+    max-width: 400px;
+    width: 100%;
+}
+
+.code {
+    color: white;
+    background-color: purple;
+}
+
+/* Formularz */
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.h1 {
+    color: purple;
+    text-shadow: 0 0 15px rgb(212, 0, 255);
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    font-family: 'Lora';
+}
+
+/* Styl karty formularza */
+.signUpCard {
+    background-color: transparent;
+    padding: 25px;
+    border-radius: 15px;
+    width: 100%;
+}
+
+/* Pola wejściowe */
+.inputBox {
+    background-color: transparent;
+    color: white;
+    border: 1px solid rgba(170, 0, 255, 0.7);
+    padding: 10px;
+    border-radius: 6px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* Przyciski */
+.signUpBtn {
+    background: linear-gradient(90deg, rgba(170, 0, 255, 0.9), rgba(0, 14, 214, 0.9));
+    color: black;
+    font-weight: bold;
+    border-radius: 40px;
+    padding: 12px;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+    border: none;
+    cursor: pointer;
+}
+
+.signUpBtn:hover {
+    box-shadow: 0 0 20px rgba(255, 200, 0, 0.9), 0 0 10px rgba(170, 0, 255, 0.9);
+}
+
+/* Linki */
+.link {
+    color: rgba(170, 0, 255, 0.8);
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+    color: rgba(255, 200, 0, 1);
+}
+
+/* Przyciski social */
+.socialBtn {
+    background: rgba(20, 20, 20, 0.8);
+    color: white;
+    box-shadow: 0 0 15px white;
+    border: 1px solid rgba(170, 0, 255, 0.7);
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.socialBtn:hover {
+    background: rgba(0, 18, 69, 0.9);
+    color: white;
+    box-shadow: 0 0 10px rgba(170, 0, 255, 0.9);
+}
+
+/* Stopka */
+.signUpFooter {
+    background: transparent;
+    color: rgba(255, 200, 0, 0.9);
+    padding: 15px;
+    border-top: 1px solid rgba(170, 0, 255, 0.5);
+    text-align: center;
+    width: 100%;
+}
+
+.signUpFooter a {
+    color: rgba(170, 0, 255, 0.8);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signUpFooter a:hover {
+    color: rgba(255, 200, 0, 0.9);
+    text-decoration: underline;
+}
+
+/* Responsywność */
+@media (max-width: 400px) {
+    .signUpBox {
+        backdrop-filter: blur(20px);
+        background-color: transparent;
+        width: 100vh;
+        height: 100vh;
+    }
+}

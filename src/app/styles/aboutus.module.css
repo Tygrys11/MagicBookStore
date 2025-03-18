@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Lora:wght@400;700&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&family=Roboto:wght@300;400;700&display=swap');
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50px;
+    gap: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+}
+
+.text {
+    flex: 1;
+    max-width: 600px;
+}
+
+.text h1 {
+    font-size: 2.3rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: rgb(170, 0, 170);
+    font-family: 'Lora';
+}
+
+.text p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #b1b1b1;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    margin-top: 15px;
+    background-color: #27114c;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    float: right;
+    transition: all 0.5s ease-in-out;
+}
+
+.btn:hover{
+    background-color: white;
+    color: black;
+    box-shadow: 0 0 20px rgb(162, 0, 162);
+}
+
+.image {
+    flex: 1;
+    max-width: 500px;
+    box-shadow: 0 0 10px white;
+}
+
+.image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* MEDIA QUERIES - Ukrywanie obrazka na telefonach i tabletach */
+@media (max-width: 850px) {
+    .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .btn{
+        float: none;
+    }
+
+    .image {
+        display: none;
+    }
+}

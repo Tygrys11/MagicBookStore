@@ -1,0 +1,292 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: white;
+  background: linear-gradient(black,rgb(18, 0, 18));
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* FOOTER PAGE */
+
+/* Ustawienia kontenera stopki */
+.container {
+  width: 100%;
+  background-color: rgb(41, 0, 96);
+  margin: 0 auto;
+  padding: 40px 40px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Ustawienia wiersza w stopce */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;  /* Dodanie przestrzeni pomiędzy kolumnami */
+  gap: 20px; /* Zapewnienie odstępów między kolumnami */
+}
+
+/* Ustawienia kolumn w stopce */
+.footer-col {
+  flex: 1; /* Zapewnia równomierne rozłożenie kolumn */
+  padding: 0 15px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  min-width: 220px; /* Minimalna szerokość kolumn */
+}
+
+/* Nagłówki w kolumnach stopki */
+.footer-col h4 {
+  font-size: 18px;
+  color: white;
+  text-transform: capitalize;
+  margin-bottom: 30px;
+  font-weight: bold;
+  position: relative;
+}
+
+.footer-col h4::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  background-color: lightblue;
+  height: 2px;
+  width: 50px;
+  box-sizing: border-box;
+}
+
+.footer-col .telNumber {
+  color: yellow;
+  font-size: 1.3em;
+  font-weight: bold;
+
+}
+
+/* Linki w stopce */
+.footer-col ul li:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.footer-col ul li a {
+  font-size: 16px;
+  text-transform: capitalize;
+  color: gray;
+  text-decoration: none;
+  font-weight: 300;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.footer-col ul li a:hover {
+  color: white;
+  padding-left: 8px;
+}
+
+.footer-col ul li:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.footer-col ul li a,
+.footer-col ul li .link {
+  font-size: 16px;
+  text-transform: capitalize;
+  color: gray;
+  text-decoration: none;
+  font-weight: 300;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.footer-col ul li a:hover,
+.footer-col ul li .link:hover {
+  color: white;
+  padding-left: 8px;
+}
+
+
+.footer-col .social-links a {
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0 10px 10px 0;
+  text-align: center;
+  line-height: 45px;
+  border-radius: 50%;
+  color: white;
+  transition: all 0.5s ease;
+}
+
+.footer-col .social-links a:hover {
+  color: rgb(0, 0, 0);
+  background-color: white;
+}
+
+/* Zapewnienie pełnej szerokości stopki */
+footer {
+  width: 100%;
+  margin-top: auto; /* Utrzymuje stopkę na dole strony */
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: rgb(41, 0, 96);
+  color: white;
+}
+
+/* Responsywność */
+@media (min-width: 768px) {
+  .footer-col {
+      width: 48%; /* Na średnich ekranach dwie kolumny obok siebie */
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-col {
+      width: 23%; /* Na dużych ekranach cztery kolumny obok siebie */
+  }
+}
+
+/* Jeśli chcesz, aby stopka była zawsze widoczna (przyklejona do dołu) */
+footer.fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  background-color: rgb(41, 0, 96);
+  color: white;
+  z-index: 1000;
+}
+
+.social-links {
+  display: flex;
+  gap: 10px; /* Odstęp między ikonami */
+}
+
+.social-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px; /* szerokość koła */
+  height: 40px; /* wysokość koła */
+  border-radius: 50%; /* okrągły kształt */
+  background-color: #333; /* ciemne tło */
+  color: white; /* kolor ikon */
+  transition: background-color 0.3s ease; /* animacja zmiany koloru */
+}
+
+.social-icon:hover {
+  background-color: #0077b5; /* zmiana tła przy hover */
+}
+
+.social-icon svg {
+  margin: 9.5; /* usuwa marginesy wokół ikon */
+}
+
+.copyright {
+  margin: 20px;
+}
+
+hr{
+  width: 100%;
+}
+
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
+  box-sizing: border-box;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modalContent {
+  background: linear-gradient(120deg, #260036, #6f3890);
+  color: #fff;
+  border: 2px solid darkkhaki;
+  box-shadow: 0 0 15px #fff201;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 600px;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.modalContent h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: rgb(255, 0, 212);
+  text-shadow: 0 0 15px rgb(98, 0, 255);
+}
+
+.modalContent p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  color: rgb(206, 160, 255);
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+strong {
+  color: yellow;
+}
+
+.modalButton {
+  background: #ffd500;
+  color: #000;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.modalButton:hover {
+  background: #fff201;
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+  transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.closeModalBtn {
+  color: white;
+  border: 2px solid rgb(140, 0, 255);
+  box-shadow: 0 0 10px rgb(140, 0, 255);
+  background-color: purple;
+  padding: 10px 20px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.closeModalBtn:hover {
+  transform: scale(1.05);
+  border: 2px solid rgb(140, 0, 255);
+  box-shadow: 0 0 10px rgb(140, 0, 255);
+  background-color: #260036;
+}
