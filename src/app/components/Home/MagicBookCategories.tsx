@@ -9,66 +9,79 @@ const categories = [
     title: "Chronicles of Ancient Wisdom",
     image: "/assets/CategoriesIconsBig/scroll.png",
     description: "Timeless masterpieces that have shaped the literary world, from legendary myths to the greatest novels in history.",
+    slug: "chronicles-of-ancient-wisdom"
   },
   {
     title: "Enchanted Tales",
     image: "/assets/CategoriesIconsBig/wizard.png",
     description: "Step into magical realms, futuristic worlds, and epic adventures filled with wizards, dragons, and interstellar journeys.",
+    slug: "enchanted-tales"
   },
   {
     title: "Legends of Heroes",
     image: "/assets/CategoriesIconsBig/sword.png",
     description: "Brave warriors, daring explorers, and historical figures come to life in these thrilling tales of courage and destiny.",
+    slug: "legends-of-heroes"
   },
   {
     title: "Elixirs of Love",
     image: "/assets/CategoriesIconsBig/love-birds.png",
     description: "Heartfelt stories of passion, fate, and timeless love that will enchant your soul and stir your emotions.",
+    slug: "elixirs-of-love"
   },
   {
     title: "Secret Scrolls of Detectives",
     image: "/assets/CategoriesIconsBig/private-detective.png",
     description: "Unravel the mysteries, follow the clues, and dive into suspenseful stories where nothing is as it seems.",
+    slug: "secret-scrolls-of-detectives"
   },
   {
     title: "Tomes of Wise Masters",
     image: "/assets/CategoriesIconsBig/magic-book.png",
     description: "Unlock the secrets of the universe, from groundbreaking discoveries to mind-expanding explorations of human knowledge.",
+    slug: "tomes-of-wise-masters"
   },
   {
     title: "Scrolls of Modern Alchemists",
     image: "/assets/CategoriesIconsBig/books.png",
     description: "A collection of wisdom from today’s greatest minds—perfect for learning, self-improvement, and mastering new skills.",
+    slug: "scrolls-of-modern-alchemists"
   },
   {
     title: "Masquerades of Imagination",
     image: "/assets/CategoriesIconsBig/theater-masks.png",
     description: "Emotionally rich narratives that explore the depth of human experience, artfully crafted by the finest storytellers.",
+    slug: "masquerades-of-imagination"
   },
   {
     title: "Map of Worlds & Afterlife",
     image: "/assets/CategoriesIconsBig/airplane.png",
     description: "Journey through uncharted lands, explore hidden cultures, and uncover the wonders of our world and beyond.",
+    slug: "map-of-worlds-afterlife"
   },
   {
     title: "Dragon Chefs’ Recipes",
     image: "/assets/CategoriesIconsBig/cooking.png",
     description: "From ancient feasts to modern delights—discover magical recipes that bring flavors to life in your own enchanted kitchen.",
+    slug: "dragon-chefs-recipes"
   },
   {
     title: "Secrets of Golden Chambers",
     image: "/assets/CategoriesIconsBig/money-bag.png",
     description: "Unlock the treasures of financial wisdom, career success, and personal growth with these powerful guides.",
+    slug: "secrets-of-golden-chambers"
   },
   {
     title: "Book of Little Wizards",
     image: "/assets/CategoriesIconsBig/baby-bottle.png",
     description: "A whimsical collection of stories, fables, and adventures to ignite the imagination of young sorcerers and dreamers.",
+    slug: "book-of-little-wizards"
   },
   {
     title: "Grimoire of Secret Knowledge",
     image: "/assets/CategoriesIconsBig/notebook.png",
     description: "A library of essential learning, filled with spellbooks of knowledge for students, scholars, and curious minds.",
+    slug: "grimoire-of-secret-knowledge"
   },
 ];
 

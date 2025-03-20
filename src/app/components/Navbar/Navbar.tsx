@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useUser, useClerk } from "@clerk/clerk-react";
+import { useUser, useClerk } from "@clerk/nextjs";
 import {
   Disclosure,
   DisclosureButton,
@@ -48,11 +48,12 @@ autor: <numer zdającego>
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Używamy lokalnego stanu
   const pathname = usePathname();
   const router = useRouter();
-  const { user, isLoaded } = useUser(); // isLoaded ensures user state is available
+  const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
-  
+
   useEffect(() => {
     if (isLoaded && user) {
       if (pathname === "/" || pathname === "/LogIn" || pathname === "/SignUp") {
@@ -60,11 +61,24 @@ export default function Navbar() {
       }
     }
   }, [user, isLoaded, pathname, router]);
-  
-  const isAuthenticated = !!user;
+
+  useEffect(() => {
+    if (isLoaded) {
+      // Jeśli użytkownik jest zalogowany, ustawiamy stan na true
+      setIsAuthenticated(!!user);
+    }
+
+    // Przekierowanie do strony 404, jeśli użytkownik nie jest zalogowany i próbuje wejść do sekcji 'dashBoard'
+    if (isLoaded && !user) {
+      if (pathname?.startsWith('/dashBoard')) {
+        router.replace('/custom-404');
+      }
+    }
+  }, [user, isLoaded, pathname, router]);
 
   const handleSignOut = async () => {
     await signOut();
+    setIsAuthenticated(false); // Ustawiamy stan na false po wylogowaniu
     router.push("/");
   };
 
@@ -98,11 +112,20 @@ export default function Navbar() {
             </div>
             <div className="hidden lg:flex lg:ml-6">
               <div className="flex space-x-4">
+                {/* Dynamiczna nawigacja na podstawie tego, czy użytkownik jest zalogowany */}
                 {(isAuthenticated ? authenticatedNavigation : navigation).map((item) => (
-                  <Link key={item.name} href={item.href} className={classNames(
-                    pathname === item.href ? "bg-indigo-950 text-white" : "text-gray-300 hover:bg-indigo-950 hover:text-yellow-400",
-                    "rounded-md px-3 py-2 text-sm font-medium"
-                  )}>{item.name}</Link>
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={classNames(
+                      pathname === item.href
+                        ? "bg-indigo-950 text-white"
+                        : "text-gray-300 hover:bg-indigo-950 hover:text-yellow-400",
+                      "rounded-md px-3 py-2 text-sm font-medium"
+                    )}
+                  >
+                    {item.name}
+                  </Link>
                 ))}
               </div>
             </div>
@@ -110,8 +133,12 @@ export default function Navbar() {
               <div className={styles.buttonContainer}>
                 {!isAuthenticated ? (
                   <>
-                    <Link href="/SignUp"><Buttons className={styles.SignUp}>Sign Up</Buttons></Link>
-                    <Link href="/LogIn"><Buttons className={`${styles.logIn} py-2 px-4 rounded`}>Log In</Buttons></Link>
+                    <Link href="/SignUp">
+                      <Buttons className={styles.SignUp}>Sign Up</Buttons>
+                    </Link>
+                    <Link href="/LogIn">
+                      <Buttons className={`${styles.logIn} py-2 px-4 rounded`}>Log In</Buttons>
+                    </Link>
                   </>
                 ) : (
                   <button onClick={handleSignOut} className={`${styles.logIn} py-2 px-4 rounded`}>Log Out</button>
@@ -122,18 +149,32 @@ export default function Navbar() {
         </div>
         <DisclosurePanel className="lg:hidden">
           <div className="space-y-1 px-2 pt-2 pb-3 text-center">
+            {/* Dynamiczna nawigacja w wersji mobilnej */}
             {(isAuthenticated ? authenticatedNavigation : navigation).map((item) => (
-              <DisclosureButton key={item.name} as={Link} href={item.href} className={classNames(
-                pathname === item.href ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-800 hover:text-purple-400",
-                "block rounded-md px-3 py-2 text-base font-medium w-full hover:bg-gray-700"
-              )}>{item.name}</DisclosureButton>
+              <DisclosureButton
+                key={item.name}
+                as={Link}
+                href={item.href}
+                className={classNames(
+                  pathname === item.href
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-300 hover:bg-gray-800 hover:text-purple-400",
+                  "block rounded-md px-3 py-2 text-base font-medium w-full hover:bg-gray-700"
+                )}
+              >
+                {item.name}
+              </DisclosureButton>
             ))}
             <div className="mt-4 space-y-2">
               {!isAuthenticated ? (
                 <>
-                  <Link href="/SignUp"><Buttons className={`${styles.SignUp} py-2 px-4 w-full rounded`}>Sign Up</Buttons></Link>
+                  <Link href="/SignUp">
+                    <Buttons className={`${styles.SignUp} py-2 px-4 w-full rounded`}>Sign Up</Buttons>
+                  </Link>
                   <hr />
-                  <Link href="/LogIn"><Buttons className={`${styles.logIn} w-full`}>Log In</Buttons></Link>
+                  <Link href="/LogIn">
+                    <Buttons className={`${styles.logIn} w-full`}>Log In</Buttons>
+                  </Link>
                 </>
               ) : (
                 <button onClick={handleSignOut} className={`${styles.logIn} py-2 px-4 w-full rounded`}>Log Out</button>
