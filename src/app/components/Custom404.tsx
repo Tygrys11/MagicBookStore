@@ -2,6 +2,15 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
+/************************************************
+komponent: Custom404
+opis: Komponent obsługujący stronę błędu 404. Wyświetla komunikat o braku dostępu do strony i automatycznie przekierowuje użytkownika na stronę główną po 5 sekundach.
+pola:
+  router - obiekt Next.js używany do nawigacji między stronami
+  useEffect - efekt uboczny uruchamiany po załadowaniu komponentu, ustawiający licznik do przekierowania
+autor: <numer zdającego>
+************************************************/
+
 export default function Custom404() {
   const router = useRouter();
 

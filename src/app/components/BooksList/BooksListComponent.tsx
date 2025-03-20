@@ -6,6 +6,28 @@ import Image from "next/image";
 import styles from "../../../app/styles/OtherPagesStyles/booksList.module.css";
 import { ImagesComponent } from "../ImageComponent";
 
+/************************************************
+klasa: BooksListComponent
+opis: Komponent wyświetlający listę książek pobranych z OpenLibrary. Umożliwia paginację oraz dodawanie książek do ulubionych i koszyka.
+pola:
+  books - stan przechowujący pobraną listę książek
+  currentPage - numer aktualnie wybranej strony paginacji
+  isClient - stan wskazujący, czy komponent został zamontowany po stronie klienta
+  isLoggedIn - stan reprezentujący, czy użytkownik jest zalogowany (obecnie domyślnie false)
+  showModal - stan zarządzający wyświetlaniem modalu z informacją o konieczności logowania
+  booksPerPage - liczba książek na stronę
+  router - obiekt nawigacji Next.js
+metody:
+  useEffect - inicjalizacja komponentu oraz pobranie książek po zamontowaniu
+  fetchBooks - pobieranie książek z API OpenLibrary
+  addToCart - dodanie książki do koszyka (wymaga logowania)
+  likeBook - oznaczenie książki jako ulubionej (wymaga logowania)
+  viewDetails - przekierowanie do szczegółów wybranej książki
+  handlePageChange - obsługa zmiany strony paginacji
+  truncateText - skracanie tekstu do określonej długości
+autor: <numer zdającego>
+************************************************/
+
 interface Book {
   title: string;
   author: string;
