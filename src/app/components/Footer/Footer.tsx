@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 export function Footer() {
   const [isModalOpen, setIsModalOpen] = useState(false);
