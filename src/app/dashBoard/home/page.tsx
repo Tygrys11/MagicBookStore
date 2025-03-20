@@ -1,5 +1,5 @@
 "use client";
-import React, { use } from "react";
+import React from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import MagicalFeatures from "../../components/Home/MagicalFeatures";
 import { AboutUs } from "../../components/Home/AboutUs";

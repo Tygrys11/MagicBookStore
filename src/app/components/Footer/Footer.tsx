@@ -15,9 +15,6 @@ export function Footer() {
 
   const closeModal = () => setIsModalOpen(false);
 
-  const handleLoginRedirect = () => router.push("/LogIn");
-  const handleSignupRedirect = () => router.push("/SignUp");
-
   useEffect(() => {
     if (isModalOpen) {
       const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -62,12 +59,12 @@ export function Footer() {
                     openModal("Privacy Policy", `
                     <p>At MagicBookStore, we respect and value your privacy. The following outlines how we handle your personal information:</p>
                     <ul>
-                      <li><strong>Information We Collect:</strong> We collect personal information such as your name, email address, shipping address, and payment details when you place an order or register on our website.<br>
-                      <br><li><strong>Use of Information:</strong> Your information is used solely for processing orders, providing customer support, and sending promotional materials if you have opted-in.</li>
-                      <br><li><strong>Data Protection:</strong> We ensure your data is protected using encryption technologies and do not share your information with third parties, unless necessary for order processing (e.g., shipping companies).</li>
-                      <br><li><strong>Cookies:</strong> We use cookies to enhance your shopping experience, including remembering your preferences and cart items.</li>
-                      <br><li><strong>Your Rights:</strong> You have the right to access, modify, or delete your personal data. Please contact us if you wish to do so.</li>
-                    </ul><br>
+                      <li><strong>Information We Collect:</strong> We collect personal information such as your name, email address, shipping address, and payment details when you place an order or register on our website.</li><br>
+                      <li><strong>Use of Information:</strong> Your information is used solely for processing orders, providing customer support, and sending promotional materials if you have opted-in.</li><br>
+                      <li><strong>Data Protection:</strong> We ensure your data is protected using encryption technologies and do not share your information with third parties, unless necessary for order processing (e.g., shipping companies).</li><br>
+                      <li><strong>Cookies:</strong> We use cookies to enhance your shopping experience, including remembering your preferences and cart items.</li><br>
+                      <li><strong>Your Rights:</strong> You have the right to access, modify, or delete your personal data. Please contact us if you wish to do so.</li><br>
+                    </ul>
                     <p>If you have any questions or concerns, please reach out to us at bookstore@magicalBooks.pl.</p>`)
                   }
                 >
@@ -80,7 +77,7 @@ export function Footer() {
                   onClick={() =>
                     openModal(
                       "FAQs",
-                      `   <h5>Frequently Asked Questions (FAQs)</h5>
+                      `<h5>Frequently Asked Questions (FAQs)</h5>
                       <p>Here are some of the most commonly asked questions:</p>
                       <ul>
                         <li><strong>How do I place an order?</strong> To place an order, simply browse our catalog, add the books you want to your cart, and proceed to checkout.</li><br>

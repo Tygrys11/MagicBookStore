@@ -66,31 +66,30 @@ export function AboutUsComponent() {
             <div className={styles.Info}>
               <h3 className={styles.TitleInfo}>ABOUT THE COMPANY</h3>
               <p>
-                Magic Bookstore is an enchanting bookstore where you’ll find a
+                Magic Bookstore is an enchanting bookstore where you&rsquo;ll find a
                 rich selection of books on both magical themes and more
-                down-to-earth topics. Whether you're searching for spells and
+                down-to-earth topics. Whether you&apos;re searching for spells and
                 legends or classic stories, every book here holds a touch of
                 magic. Our bookstore is open in every universe across the
-                cosmos. ✨📖
+                cosmos. ✨📚
               </p>
             </div>
           </div>
-
           <div className={styles.Info}>
             <h3 className={styles.TitleInfo}>LOCATION</h3>
             <p>
               Our magical bookstore is now located at 24 Magiczna Street in the
               Enchanted Forest, hidden along an ancient path where stories
               whisper through the air. Once, we resided in the enchanted halls
-              of the "Wizards’ Gallery" at 5 Czarodziejska Street, but books
+              of the &quot;Wizards&rsquo; Gallery&quot; at 5 Czarodziejska Street, but books
               have a way of leading us to new realms.
               <br />
               <br />
               You may also find traces of our bookstore in Diagon Alley, tucked
               between the shadowed alleys of the Golden Hollow, or at the very
-              edge of the Dreaming Woods—if you know where to look. Wherever
+              edge of the Dreaming Woods&mdash;if you know where to look. Wherever
               magic thrives, so too does our bookstore, always ready to welcome
-              wanderers in search of their next great adventure. ✨📖
+              wanderers in search of their next great adventure. ✨📚
             </p>
           </div>
         </div>

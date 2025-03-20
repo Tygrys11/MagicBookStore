@@ -1,7 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { FaShoppingCart, FaHeart } from "react-icons/fa";
+import Image from "next/image";
 import styles from "../../../app/styles/OtherPagesStyles/booksList.module.css";
 import { ImagesComponent } from "../ImageComponent";
 
@@ -20,11 +21,9 @@ const truncateText = (text: string, maxLength: number) => {
 export default function BooksListComponent() {
   const [books, setBooks] = useState<Book[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [cart, setCart] = useState<Book[]>([]);
-  const [likedBooks, setLikedBooks] = useState<string[]>([]);
   const [isClient, setIsClient] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);  // Nowy stan dla zalogowanego użytkownika
-  const [showModal, setShowModal] = useState(false);  // Stan do pokazania modalu
+  const [isLoggedIn] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState(false);
   const booksPerPage = 50;
   const router = useRouter();
 
@@ -32,11 +31,7 @@ export default function BooksListComponent() {
     setIsClient(true);
   }, []);
 
-  useEffect(() => {
-    fetchBooks();
-  }, [currentPage]);
-
-  const fetchBooks = async () => {
+  const fetchBooks = useCallback(async () => {
     try {
       const response = await fetch(
         `https://openlibrary.org/search.json?q=book&limit=${booksPerPage}&page=${currentPage}`
@@ -57,28 +52,23 @@ export default function BooksListComponent() {
     } catch (error) {
       console.error("Błąd pobierania książek:", error);
     }
-  };
+  }, [currentPage]);
+
+  useEffect(() => {
+    fetchBooks();
+  }, [fetchBooks]);
 
   const addToCart = (book: Book) => {
     if (!isLoggedIn) {
-      setShowModal(true);  // Jeśli użytkownik nie jest zalogowany, pokazujemy modal
+      setShowModal(true);
     } else {
-      setCart((prevCart) => [...prevCart, book]);
       alert(`Dodano do koszyka: ${book.title}`);
     }
   };
 
   const likeBook = (id: string) => {
     if (!isLoggedIn) {
-      setShowModal(true);  // Jeśli użytkownik nie jest zalogowany, pokazujemy modal
-    } else {
-      setLikedBooks((prevLikes) => {
-        if (prevLikes.includes(id)) {
-          return prevLikes.filter((likedId) => likedId !== id);
-        } else {
-          return [...prevLikes, id];
-        }
-      });
+      setShowModal(true);
     }
   };
 
@@ -93,18 +83,6 @@ export default function BooksListComponent() {
     if (!isNaN(value) && value > 0) {
       setCurrentPage(value);
     }
-  };    
-
-  const closeModal = () => {
-    setShowModal(false); 
-  };
-
-  const goToLogin = () => {
-    router.push('/LogIn'); 
-  };
-
-  const goToSignup = () => {
-    router.push('/SignUp'); 
   };
 
   return (
@@ -113,62 +91,32 @@ export default function BooksListComponent() {
 
       {showModal && (
         <div className={styles.modal}>
-            
           <div className={styles.modalContent}>
-            <ImagesComponent
-            src="/assets/wizard.png"
-            alt="wizard"
-            className={styles.wizardImg}
-          />
+            <ImagesComponent src="/assets/wizard.png" alt="wizard" className={styles.wizardImg} />
             <p>To add books to your favorites or cart, you must log in!</p>
             <div className={styles.modalButtons}>
-              <button onClick={goToLogin} className={styles.modalButton}>Log In</button>
-              <button onClick={goToSignup} className={styles.modalButton}>Sign Up</button>
-              <button onClick={closeModal} className={styles.modalButton}>Close</button>
+              <button onClick={() => router.push('/LogIn')} className={styles.modalButton}>Log In</button>
+              <button onClick={() => router.push('/SignUp')} className={styles.modalButton}>Sign Up</button>
+              <button onClick={() => setShowModal(false)} className={styles.modalButton}>Close</button>
             </div>
           </div>
         </div>
       )}
 
       <div className={styles.booksGrid}>
-        {books.map((book, index) => (
-          <div
-            key={index}
-            className={styles.bookCard}
-            onClick={() => viewDetails(book.id)}
-          >
+        {books.map((book) => (
+          <div key={book.id} className={styles.bookCard} onClick={() => viewDetails(book.id)}>
             <br />
-            <img
-              src={book.cover}
-              alt={book.title}
-              className={styles.bookImage}
-            />
+            <Image src={book.cover} alt={book.title} width={128} height={192} className={styles.bookImage} />
             <div className={styles.bookInfo}>
-              <h2 className={styles.bookTitle}>
-                {truncateText(book.title, 40)}
-              </h2>
-              <p className={styles.bookAuthor}>
-                {truncateText(book.author, 30)}
-              </p>
+              <h2 className={styles.bookTitle}>{truncateText(book.title, 40)}</h2>
+              <p className={styles.bookAuthor}>{truncateText(book.author, 30)}</p>
               <br />
               <div className={styles.buttonRow}>
-                <button
-                  className={`${styles.iconButton} ${styles.likeButton}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    likeBook(book.id);
-                  }}
-                >
+                <button className={`${styles.iconButton} ${styles.likeButton}`} onClick={(e) => { e.stopPropagation(); likeBook(book.id); }}>
                   <FaHeart />
                 </button>
-                
-                <button
-                  className={`${styles.iconButton} ${styles.cartButton}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    addToCart(book);
-                  }}
-                >
+                <button className={`${styles.iconButton} ${styles.cartButton}`} onClick={(e) => { e.stopPropagation(); addToCart(book); }}>
                   <FaShoppingCart />
                 </button>
               </div>
@@ -178,28 +126,9 @@ export default function BooksListComponent() {
       </div>
 
       <div className={styles.pagination}>
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          className={`${styles.button} ${styles.buttonPrev}`}
-          disabled={currentPage === 1}
-        >
-          ⬅ Back
-        </button>
-        
-        <input
-          type="number"
-          value={currentPage}
-          onChange={handlePageChange}
-          className={styles.pageInput}
-          min="1"
-        />
-        
-        <button
-          onClick={() => setCurrentPage((prev) => prev + 1)}
-          className={`${styles.button} ${styles.buttonNext}`}
-        >
-          Next ➡
-        </button>
+        <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} className={`${styles.button} ${styles.buttonPrev}`} disabled={currentPage === 1}>⬅ Back</button>
+        <input type="number" value={currentPage} onChange={handlePageChange} className={styles.pageInput} min="1" />
+        <button onClick={() => setCurrentPage((prev) => prev + 1)} className={`${styles.button} ${styles.buttonNext}`}>Next ➡</button>
       </div>
     </div>
   );
