@@ -66,7 +66,7 @@ export default function BooksListComponent() {
     }
   };
 
-  const likeBook = (id: string) => {
+  const likeBook = () => { // Usuń argument `id`
     if (!isLoggedIn) {
       setShowModal(true);
     }
@@ -113,7 +113,7 @@ export default function BooksListComponent() {
               <p className={styles.bookAuthor}>{truncateText(book.author, 30)}</p>
               <br />
               <div className={styles.buttonRow}>
-                <button className={`${styles.iconButton} ${styles.likeButton}`} onClick={(e) => { e.stopPropagation(); likeBook(book.id); }}>
+                <button className={`${styles.iconButton} ${styles.likeButton}`} onClick={(e) => { e.stopPropagation(); likeBook(); }}>
                   <FaHeart />
                 </button>
                 <button className={`${styles.iconButton} ${styles.cartButton}`} onClick={(e) => { e.stopPropagation(); addToCart(book); }}>

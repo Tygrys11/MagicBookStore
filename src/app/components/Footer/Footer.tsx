@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 export function Footer() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ title: "", content: "" });
-  const router = useRouter();
 
   const openModal = (title: string, content: string) => {
     setModalContent({ title, content });
