@@ -14,7 +14,7 @@ autor: <numer zdającego>
 export function AboutUs() {
   const { user } = useUser(); 
 
-  const aboutUsLink = user ? "/dashBoard/aboutus" : "/aboutus"; 
+  const aboutUsLink = user ? "/profile/aboutus" : "/aboutus"; 
 
   return (
     <>

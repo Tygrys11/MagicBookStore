@@ -47,17 +47,17 @@ body {
 .row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;  /* Dodanie przestrzeni pomiędzy kolumnami */
-  gap: 20px; /* Zapewnienie odstępów między kolumnami */
+  justify-content: space-between;  
+  gap: 20px; 
 }
 
 /* Ustawienia kolumn w stopce */
 .footer-col {
-  flex: 1; /* Zapewnia równomierne rozłożenie kolumn */
+  flex: 1;
   padding: 0 15px;
   box-sizing: border-box;
   margin-bottom: 20px;
-  min-width: 220px; /* Minimalna szerokość kolumn */
+  min-width: 220px; 
 }
 
 /* Nagłówki w kolumnach stopki */
@@ -88,7 +88,6 @@ body {
 
 }
 
-/* Linki w stopce */
 .footer-col ul li:not(:last-child) {
   margin-bottom: 10px;
 }
@@ -148,10 +147,9 @@ body {
   background-color: white;
 }
 
-/* Zapewnienie pełnej szerokości stopki */
 footer {
   width: 100%;
-  margin-top: auto; /* Utrzymuje stopkę na dole strony */
+  margin-top: auto;
   padding-top: 20px;
   padding-bottom: 20px;
   background-color: rgb(41, 0, 96);
@@ -161,17 +159,16 @@ footer {
 /* Responsywność */
 @media (min-width: 768px) {
   .footer-col {
-      width: 48%; /* Na średnich ekranach dwie kolumny obok siebie */
+      width: 48%;
   }
 }
 
 @media (min-width: 1024px) {
   .footer-col {
-      width: 23%; /* Na dużych ekranach cztery kolumny obok siebie */
+      width: 23%;
   }
 }
 
-/* Jeśli chcesz, aby stopka była zawsze widoczna (przyklejona do dołu) */
 footer.fixed {
   position: fixed;
   bottom: 0;
@@ -185,27 +182,27 @@ footer.fixed {
 
 .social-links {
   display: flex;
-  gap: 10px; /* Odstęp między ikonami */
+  gap: 10px; 
 }
 
 .social-icon {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px; /* szerokość koła */
-  height: 40px; /* wysokość koła */
-  border-radius: 50%; /* okrągły kształt */
-  background-color: #333; /* ciemne tło */
-  color: white; /* kolor ikon */
-  transition: background-color 0.3s ease; /* animacja zmiany koloru */
+  width: 40px; 
+  height: 40px; 
+  border-radius: 50%; 
+  background-color: #333; 
+  color: white; 
+  transition: background-color 0.3s ease; 
 }
 
 .social-icon:hover {
-  background-color: #0077b5; /* zmiana tła przy hover */
+  background-color: #0077b5;
 }
 
 .social-icon svg {
-  margin: 9.5; /* usuwa marginesy wokół ikon */
+  margin: 9.5; 
 }
 
 .copyright {
@@ -215,7 +212,6 @@ footer.fixed {
 hr{
   width: 100%;
 }
-
 
 /* Modal */
 .modal {
