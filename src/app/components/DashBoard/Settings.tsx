@@ -1,4 +1,3 @@
-"use client"
 import styles from "../../styles/OtherPagesStyles/dashBoard.module.css";
 
 export default function Settings() {
