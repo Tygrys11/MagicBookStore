@@ -8,7 +8,7 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from "@headlessui/react";
-import { MdDashboard } from "react-icons/md";
+import { MdDashboard, MdShoppingCart } from "react-icons/md";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Buttons } from "../Buttons";
 import styles from "../../styles/navbar.module.css";
@@ -64,14 +64,22 @@ export default function Navbar() {
 
   useEffect(() => {
     if (isLoaded) {
-      // Jeśli użytkownik jest zalogowany, ustawiamy stan na true
       setIsAuthenticated(!!user);
-    }
+  
+      if (!user) {
+        if (
+          pathname?.startsWith("/profile") || // Blokowanie wszystkich /profile/*
+          pathname === "/profile/cart" || 
+          pathname === "/profile/dashboard"
+        ) {
 
-    // Przekierowanie do strony 404, jeśli użytkownik nie jest zalogowany i próbuje wejść do sekcji 'dashBoard'
-    if (isLoaded && !user) {
-      if (pathname?.startsWith("/profile")) {
-        router.replace("/custom-404");
+          router.replace("/custom-404"); // Możesz zmienić na router.push("/custom-404") do testów
+        }
+      }
+  
+      if (user && (pathname === "/" || pathname === "/LogIn" || pathname === "/SignUp")) {
+        console.log("Przekierowanie do profile/home...");
+        router.push("/profile/home");
       }
     }
   }, [user, isLoaded, pathname, router]);
@@ -94,7 +102,37 @@ export default function Navbar() {
       >
         <div className="mx-auto max-w-7xl px-2 md:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
-            <div className="absolute inset-y-0 right-0 flex items-center lg:hidden">
+            <div className="absolute inset-y-0 right-0 flex items-center space-x-2 lg:hidden">
+              {/* Jeśli użytkownik jest zalogowany, pokaż ikonę koszyka */}
+              {isAuthenticated && (
+                <Link href="/profile/cart">
+                  <button className="text-gray-300 hover:text-yellow-400 p-2">
+                    <MdShoppingCart className="w-6 h-6" />
+                  </button>
+                </Link>
+              )}
+
+              {/* Przycisk profilu użytkownika, jeśli zalogowany */}
+              {isAuthenticated && (
+                <UserButton
+                  afterSignOutUrl="/"
+                  appearance={{
+                    elements: {
+                      userButtonPopoverActionButton__manageAccount: "hidden",
+                    },
+                  }}
+                >
+                  <UserButton.MenuItems>
+                    <UserButton.Link
+                      href="/profile/dashboard"
+                      label="Dashboard"
+                      labelIcon={<MdDashboard />}
+                    />
+                  </UserButton.MenuItems>
+                </UserButton>
+              )}
+
+              {/* Przycisk hamburgera */}
               <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-500 hover:bg-purple-950 hover:text-white focus:ring-2 focus:ring-white focus:outline-none focus:ring-inset">
                 <Bars3Icon
                   className="block size-6 group-data-open:hidden"
@@ -106,6 +144,7 @@ export default function Navbar() {
                 />
               </DisclosureButton>
             </div>
+
             <div className="flex items-center space-x-2">
               <img alt="Logo" src="/assets/book.png" className="h-8 w-auto" />
               <span className="text-2xl font-bold text-yellow-400">
@@ -147,6 +186,13 @@ export default function Navbar() {
                   </>
                 ) : (
                   <>
+                    {isAuthenticated && (
+                      <Link href="/profile/cart">
+                        <button className="text-gray-30 hover:text-yellow-400 rounded-md px-3 py-2 text-sm font-medium">
+                          <MdShoppingCart className="inline-block w-6 h-6" />
+                        </button>
+                      </Link>
+                    )}
                     <UserButton
                       afterSignOutUrl="/"
                       appearance={{
@@ -208,25 +254,7 @@ export default function Navbar() {
                   </Link>
                 </>
               ) : (
-                <>
-                  <hr />
-                  <UserButton
-                    afterSignOutUrl="/"
-                    appearance={{
-                      elements: {
-                        userButtonPopoverActionButton__manageAccount: "hidden",
-                      },
-                    }}
-                  >
-                    <UserButton.MenuItems>
-                      <UserButton.Link
-                        href="/profile/dashboard"
-                        label="Dashboard"
-                        labelIcon={<MdDashboard />}
-                      />
-                    </UserButton.MenuItems>
-                  </UserButton>
-                </>
+                <></>
               )}
             </div>
           </div>
