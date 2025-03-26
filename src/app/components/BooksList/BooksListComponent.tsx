@@ -88,14 +88,12 @@ export default function BooksListComponent() {
     console.log("User:", user);
     
     if (!user) {
-      console.error("Błąd: Użytkownik nie jest zalogowany.");
       setModalMessage("To add books to your cart, please log in!");
       setShowLoginModal(true);
       return;
     }
   
     try {
-      const userId = user.id;
       const cartRef = collection(db, "cart", user.id, "items");
       const q = query(cartRef, where("book_abc", "==", book.id));
       const querySnapshot = await getDocs(q);
