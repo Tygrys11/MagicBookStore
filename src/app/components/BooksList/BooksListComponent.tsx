@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useClerk } from "@clerk/clerk-react"; // Import Clerk hook
 import styles from "../../../app/styles/OtherPagesStyles/booksList.module.css";
 import { ImagesComponent } from "../ImageComponent";
-import { db, auth } from "../../../firebase";
+import { db } from "../../../firebase";
 import {
   collection,
   query,
@@ -32,7 +32,7 @@ export default function BooksListComponent() {
   const { user } = useClerk(); // Call useClerk hook inside the component
   const [books, setBooks] = useState<Book[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [, setIsLoggedIn] = useState<boolean>(false);
   const [modalMessage, setModalMessage] = useState<string>(""); // Message for modal
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false); // Login Modal state
   const [showAddedModal, setShowAddedModal] = useState<boolean>(false); // Added Modal state
