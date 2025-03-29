@@ -53,35 +53,40 @@ export function ContactComponent() {
   ************************************************/
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (!formData.name || !formData.email || !formData.message) {
       setMessageStatus("Proszę wypełnić wszystkie pola formularza.");
       setTimeout(() => setMessageStatus(""), 5000);
       if (!isSignedIn) {
         setMessageStatus("Proszę zalogować się, aby wysłać wiadomość.");
         setTimeout(() => setMessageStatus(""), 5000);
-        return;
       }
       return;
     }
-
+  
+    if (!user || !user.id) {
+      setMessageStatus("Nie można znaleźć identyfikatora użytkownika.");
+      setTimeout(() => setMessageStatus(""), 5000);
+      return;
+    }
+  
     setLoading(true);
-
+  
     try {
       const contactRef = doc(db, "contactUs", user.id);
       const userDoc = await getDoc(contactRef);
-
+  
       if (!userDoc.exists()) {
         await setDoc(contactRef, {
           userId: user.id,
           createdAt: new Date(),
         });
       }
-
+  
       const messagesRef = collection(contactRef, "messages");
       const currentDate = new Date();
       const messageId = currentDate.toISOString();
-
+  
       await addDoc(messagesRef, {
         messageId: messageId,
         name: formData.name,
@@ -89,7 +94,7 @@ export function ContactComponent() {
         message: formData.message,
         timestamp: currentDate,
       });
-
+  
       setMessageStatus("Twoja wiadomość została wysłana pomyślnie!");
       setTimeout(() => setMessageStatus(""), 5000);
       setFormData({ name: "", email: "", message: "" });
@@ -101,6 +106,7 @@ export function ContactComponent() {
       setLoading(false);
     }
   };
+  
 
   return (
     <>
