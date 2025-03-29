@@ -1,71 +1,81 @@
 "use client";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../../firebase"; // Firebase configuration
+import { Timestamp } from "firebase/firestore";
+import { db } from "../../../firebase";
 import { motion } from "framer-motion";
-import { useUser } from "@clerk/clerk-react"; // Importujemy Hook Clerk
+import { useUser } from "@clerk/clerk-react";
+import styles from "../../../app/styles/OtherPagesStyles/cartComponent.module.css";
 
-// Definicja typu dla przedmiotu w koszyku
 interface CartItem {
   id: string;
-  bookId: string; // ID książki z kolekcji "book_abc"
+  bookId: string;
 }
 
 interface BookDetails {
   title: string;
   author: string;
   cover: string;
-  addedAt: { seconds: number }; // timestamp z Firestore
+  addedAt: Date;
+  price: number;
 }
 
-const CONCURRENT_REQUEST_LIMIT = 5; // Limit równoczesnych żądań
+const CONCURRENT_REQUEST_LIMIT = 5;
 
+/************************************************
+funkcja: CartComponent
+opis: Komponent odpowiedzialny za wyświetlenie koszyka użytkownika. Pobiera pozycje z koszyka i szczegóły książek.
+pola:
+  items - lista pozycji w koszyku
+  bookDetails - lista szczegółów książek w koszyku
+  loading - stan ładowania danych
+autor: <numer zdającego>
+************************************************/
 export default function CartComponent() {
-  const { user, isLoaded, isSignedIn } = useUser(); // Hook z Clerk do uzyskania użytkownika
+  const { user, isLoaded, isSignedIn } = useUser();
   const [items, setItems] = useState<CartItem[]>([]);
-  const [bookDetails, setBookDetails] = useState<BookDetails[]>([]); // Dodanie stanu na szczegóły książek
+  const [bookDetails, setBookDetails] = useState<BookDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  /************************************************
+  funkcja: useEffect
+  opis: Hook odpowiedzialny za pobranie danych koszyka oraz szczegółów książek, jeżeli użytkownik jest zalogowany i dane są załadowane.
+  pola:
+    brak
+  autor: <numer zdającego>
+  ************************************************/
   useEffect(() => {
     if (!isLoaded || !isSignedIn) {
       setLoading(false);
       return;
     }
 
-    // Function to fetch book details from Open Library API
+    /************************************************
+  funkcja: fetchBookDetails
+  opis: Funkcja asynchroniczna pobierająca szczegóły książki z bazy na podstawie ID książki.
+  pola:
+    bookId - ID książki, której szczegóły mają zostać pobrane
+  autor: <numer zdającego>
+  ************************************************/
+
     const fetchBookDetails = async (bookId: string) => {
       try {
-        console.log(`Fetching details for bookId: ${bookId}`);
-        const response = await fetch(`https://openlibrary.org${bookId}.json`);
-        if (!response.ok) {
-          console.error(`Failed to fetch details for ${bookId}`);
-          return null;
-        }
-        const bookData = await response.json();
-        console.log(`Book data for ${bookId}:`, bookData);
-
-        if (!bookData) {
-          return null;
-        }
-
-        const coverImageUrl = bookData.cover
-          ? `https://covers.openlibrary.org/b/id/${bookData.cover.medium}-M.jpg`
-          : "https://via.placeholder.com/150";
-
-        return {
-          title: bookData.title || "Brak tytułu",
-          author: bookData.authors
-            ? bookData.authors[0].name
-            : "Nieznany autor",
-          cover: coverImageUrl,
-          addedAt: new Date(), // Placeholder for added date
-        };
+        const bookRef = collection(db, "books");
+        const snapshot = await getDocs(bookRef);
+        return snapshot.docs.find((doc) => doc.id === bookId)?.data();
       } catch (error) {
         console.error(`Error fetching book details for ${bookId}:`, error);
         return null;
       }
     };
 
+    /************************************************
+    funkcja: fetchCart
+    opis: Funkcja asynchroniczna pobierająca pozycje w koszyku z bazy danych i szczegóły książek.
+    pola:
+      brak
+    autor: <numer zdającego>
+    ************************************************/
     const fetchCart = async () => {
       try {
         if (!user) {
@@ -85,23 +95,26 @@ export default function CartComponent() {
           bookId: doc.data().bookId,
         }));
 
-        console.log("Pobrane książki z koszyka:", cartItems); // Log the cart items
+        console.log("Pobrane książki z koszyka:", cartItems);
         setItems(cartItems);
 
-        // Fetch book details with throttling
+        /************************************************
+        funkcja: fetchBooksWithThrottle
+        opis: Funkcja odpowiedzialna za pobieranie szczegółów książek z throttlowaniem zapytań (ograniczenie liczby równoczesnych zapytań).
+        pola:
+          cartItems - lista pozycji w koszyku, dla których mają zostać pobrane szczegóły książek
+        autor: <numer zdającego>
+        ************************************************/
         const fetchBooksWithThrottle = async (cartItems: CartItem[]) => {
           const result: BookDetails[] = [];
           for (let i = 0; i < cartItems.length; i += CONCURRENT_REQUEST_LIMIT) {
-            // Take a batch of items to fetch
             const batch = cartItems.slice(i, i + CONCURRENT_REQUEST_LIMIT);
             const batchRequests = batch.map((item) =>
               fetchBookDetails(item.bookId)
             );
             const books = await Promise.all(batchRequests);
             result.push(
-              ...(books.filter(
-                (book) => book !== null
-              ) as unknown as BookDetails[])
+              ...(books.filter((book) => book !== null) as BookDetails[])
             );
           }
           return result;
@@ -109,7 +122,7 @@ export default function CartComponent() {
 
         const books = await fetchBooksWithThrottle(cartItems);
 
-        console.log("Szczegóły książek:", books); // Log the fetched book details
+        console.log("Szczegóły książek:", books);
         setBookDetails(books);
       } catch (error) {
         console.error("Błąd pobierania koszyka:", error);
@@ -130,43 +143,64 @@ export default function CartComponent() {
   }
 
   return (
-    <div className="bg-[#1a001a] min-h-screen p-6 flex flex-col items-center text-yellow-400">
-      <h1 className="text-3xl text-center font-bold mb-6">
-        🪄 Twój Magiczny Koszyk ✨
-      </h1>
+    <div className={styles.container}>
+      <h1 className={styles.header}>🪄 Twój Magiczny Koszyk ✨</h1>
 
       {loading ? (
-        <p className="text-yellow-300">Ładowanie koszyka...</p>
+        <p className={styles.loadingMessage}>Ładowanie koszyka...</p>
       ) : items.length === 0 ? (
-        <p className="text-yellow-500">Twój koszyk jest pusty.</p>
+        <p className={styles.emptyCartMessage}>Twój koszyk jest pusty.</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl">
+        <div className={styles.grid}>
           {bookDetails.length === 0 ? (
-            <p className="text-yellow-500">Brak książek w koszyku.</p>
+            <p className={styles.emptyCartMessage}>Brak książek w koszyku.</p>
           ) : (
             bookDetails.map((item, index) => (
               <motion.div
                 key={index}
                 whileHover={{ scale: 1.05 }}
-                className="bg-[#330033] text-yellow-300 shadow-lg rounded-2xl p-4 border border-yellow-500 transition-transform"
+                className={styles.bookCard}
               >
-                <img
-                  src={item.cover || "https://via.placeholder.com/150"}
-                  alt={item.title}
-                  className="w-full h-40 object-cover rounded-lg mb-3"
-                />
+                <div className={styles.bookCardContent}>
+                  <div className={styles.leftSide}>
+                    <img
+                      src={item.cover}
+                      alt={item.title}
+                      className={styles.bookImage}
+                    />
+                  </div>
 
-                <h2 className="text-xl font-semibold">
-                  {item.title || "Brak tytułu"}
-                </h2>
-                <p className="mt-1 text-yellow-200">
-                  Autor: {item.author || "Nieznany"}
-                </p>
-                <p className="mt-1 text-yellow-500 text-sm">
-                  {item.addedAt
-                    ? new Date(item.addedAt.seconds * 1000).toLocaleDateString()
-                    : "Data nieznana"}
-                </p>
+                  <div>
+                    <h2 className={styles.bookTitle}>{item.title}</h2>
+                    <p className={styles.bookAuthor}>Author: {item.author}</p>
+
+                    <p className={styles.bookDate}>
+                      {item.addedAt
+                        ? item.addedAt instanceof Timestamp
+                          ? "Data dodania: " +
+                            item.addedAt.toDate().toLocaleDateString()
+                          : new Date(item.addedAt).toLocaleDateString()
+                        : "Data nieznana"}
+                    </p>
+                  </div>
+
+                  <div className={styles.rightSide}>
+                    <p className={styles.price}>${item.price.toFixed(2)}</p>
+
+                    <div className={styles.quantityWrapper}>
+                      <label htmlFor="quantity" className="text-yellow-200">
+                        Ilość:
+                      </label>
+                      <input
+                        type="number"
+                        id="quantity"
+                        min="1"
+                        defaultValue="1"
+                        className={styles.quantityInput}
+                      />
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             ))
           )}

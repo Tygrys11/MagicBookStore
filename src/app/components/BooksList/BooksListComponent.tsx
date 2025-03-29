@@ -3,17 +3,17 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { FaShoppingCart, FaHeart } from "react-icons/fa";
 import Image from "next/image";
-import { useClerk } from "@clerk/clerk-react"; // Import Clerk hook
+import { useClerk } from "@clerk/clerk-react";
 import styles from "../../../app/styles/OtherPagesStyles/booksList.module.css";
 import { ImagesComponent } from "../ImageComponent";
 import { db } from "../../../firebase";
 import {
   collection,
   query,
-  where,
   getDocs,
-  addDoc,
   serverTimestamp,
+  addDoc,
+  where,
 } from "firebase/firestore";
 
 interface Book {
@@ -22,23 +22,49 @@ interface Book {
   cover: string;
   id: string;
   description?: string;
+  price: number;
 }
 
+/************************************************
+Funkcja: truncateText
+Opis: Funkcja, która skraca tekst do określonej długości i dodaje "..." jeśli tekst jest zbyt długi.
+Argumenty:
+  text - tekst do skrócenia
+  maxLength - maksymalna długość tekstu
+Zwraca: skrócony tekst
+Autor: <numer zdającego>
+************************************************/
 const truncateText = (text: string, maxLength: number) => {
   return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 };
 
+/************************************************
+klasa: BooksListComponent
+opis: Komponent, który wyświetla listę książek. Umożliwia dodanie książek do koszyka lub ulubionych oraz wyświetlanie modali informujących o stanie akcji.
+pola:
+  books - tablica książek do wyświetlenia
+  modalMessage - wiadomość, która będzie wyświetlana w modalu
+  showLoginModal - stan wskazujący, czy modal logowania jest widoczny
+  showAddedModal - stan wskazujący, czy modal dodania książki do koszyka lub ulubionych jest widoczny
+  user - obiekt użytkownika z Clerk
+autor: <numer zdającego>
+************************************************/
 export default function BooksListComponent() {
-  const { user } = useClerk(); // Call useClerk hook inside the component
+  const { user } = useClerk();
   const [books, setBooks] = useState<Book[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [, setIsLoggedIn] = useState<boolean>(false);
-  const [modalMessage, setModalMessage] = useState<string>(""); // Message for modal
-  const [showLoginModal, setShowLoginModal] = useState<boolean>(false); // Login Modal state
-  const [showAddedModal, setShowAddedModal] = useState<boolean>(false); // Added Modal state
-  const booksPerPage = 50;
+  const [modalMessage, setModalMessage] = useState<string>("");
+  const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
+  const [showAddedModal, setShowAddedModal] = useState<boolean>(false);
   const router = useRouter();
 
+  /************************************************
+  Funkcja: useEffect (stan logowania użytkownika)
+  Opis: Sprawdza, czy użytkownik jest zalogowany i ustawia stan logowania.
+  Argumenty: Brak
+  Zwraca: Brak
+  Autor: <numer zdającego>
+  ************************************************/
   useEffect(() => {
     if (user) {
       setIsLoggedIn(true);
@@ -47,66 +73,73 @@ export default function BooksListComponent() {
     }
   }, [user]);
 
+  /************************************************
+  Funkcja: fetchBooks
+  Opis: Funkcja asynchroniczna, która pobiera książki z kolekcji Firestore i aktualizuje stan `books`.
+  Argumenty: Brak
+  Zwraca: Brak
+  Autor: <numer zdającego>
+  ************************************************/
   const fetchBooks = useCallback(async () => {
     try {
-      const response = await fetch(
-        `https://openlibrary.org/search.json?q=book&limit=${booksPerPage}&page=${currentPage}`
-      );
-      const data = await response.json();
+      const booksRef = collection(db, "books");
+      const q = query(booksRef);
+      const querySnapshot = await getDocs(q);
 
-      const filteredBooks: Book[] = data.docs
-        .filter((book: { cover_i?: number }) => book.cover_i)
-        .map(
-          (book: {
-            description: string;
-            title?: string;
-            author_name?: string[];
-            cover_i?: number;
-            key: string;
-          }) => ({
-            title: book.title || "Brak tytułu",
-            author: book.author_name
-              ? book.author_name.join(", ")
-              : "Nieznany autor",
-            cover: `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`,
-            id: book.key,
-            description: book.description || "No description available",
-          })
-        );
+      const booksList: Book[] = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          title: data.title || "Brak tytułu",
+          author: data.author || "Nieznany autor",
+          cover: data.cover || "Brak okładki",
+          description: data.description || "Brak opisu",
+          price: data.price || 0,
+        };
+      });
 
-      setBooks(filteredBooks);
+      setBooks(booksList);
     } catch (error) {
-      console.error("Error fetching books:", error);
+      console.error("Error fetching books from Firestore:", error);
     }
-  }, [currentPage]);
+  }, []);
 
   useEffect(() => {
     fetchBooks();
   }, [fetchBooks]);
 
+  /************************************************
+  Funkcja: addToCart
+  Opis: Funkcja asynchroniczna, która dodaje książkę do koszyka użytkownika w Firestore.
+  Argumenty:
+    book - obiekt książki, który ma zostać dodany do koszyka
+  Zwraca: Brak
+  Autor: <numer zdającego>
+  ************************************************/
   const addToCart = async (book: Book) => {
     console.log("User:", user);
-    
+
     if (!user) {
       setModalMessage("To add books to your cart, please log in!");
       setShowLoginModal(true);
       return;
     }
-  
+
     try {
       const cartRef = collection(db, "cart", user.id, "items");
       const q = query(cartRef, where("book_abc", "==", book.id));
       const querySnapshot = await getDocs(q);
-  
+
       if (querySnapshot.empty) {
         await addDoc(cartRef, {
           bookId: book.id,
           title: book.title,
           author: book.author,
           cover: book.cover,
+          price: book.price,
           addedAt: serverTimestamp(),
         });
-  
+
         setModalMessage(`Book "${book.title}" has been added to your cart!`);
         setShowAddedModal(true);
       } else {
@@ -116,8 +149,48 @@ export default function BooksListComponent() {
       console.error("Error adding to cart:", error);
     }
   };
-  
-  
+
+  /************************************************
+  Funkcja: addToFavourites
+  Opis: Funkcja asynchroniczna, która dodaje książkę do ulubionych użytkownika w Firestore.
+  Argumenty:
+    book - obiekt książki, który ma zostać dodany do ulubionych
+  Zwraca: Brak
+  Autor: <numer zdającego>
+  ************************************************/
+  const addToFavourites = async (book: Book) => {
+    if (!user) {
+      setModalMessage("To add books to your favourites, please log in!");
+      setShowLoginModal(true);
+      return;
+    }
+
+    try {
+      const favouritesRef = collection(db, "favourites", user.id, "items");
+      const q = query(favouritesRef, where("book_abc", "==", book.id));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        await addDoc(favouritesRef, {
+          bookId: book.id,
+          title: book.title,
+          author: book.author,
+          cover: book.cover,
+          price: book.price,
+          addedAt: serverTimestamp(),
+        });
+
+        setModalMessage(
+          `Book "${book.title}" has been added to your favourites!`
+        );
+        setShowAddedModal(true);
+      } else {
+        alert(`The book "${book.title}" is already in your favourites.`);
+      }
+    } catch (error) {
+      console.error("Error adding to favourites:", error);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -186,7 +259,7 @@ export default function BooksListComponent() {
           >
             <br />
             <Image
-              src={book.cover}
+              src={book.cover || "/assets/default-cover.jpg"}
               alt={book.title}
               width={128}
               height={192}
@@ -199,16 +272,20 @@ export default function BooksListComponent() {
               <p className={styles.bookAuthor}>
                 {truncateText(book.author, 30)}
               </p>
-              <br />
+
+              <p className={styles.bookPrice}>${book.price.toFixed(2)}</p>
+
               <div className={styles.buttonRow}>
                 <button
                   className={`${styles.iconButton} ${styles.likeButton}`}
                   onClick={(e) => {
                     e.stopPropagation();
+                    addToFavourites(book); // Dodaj książkę do ulubionych
                   }}
                 >
                   <FaHeart />
                 </button>
+
                 <button
                   className={`${styles.iconButton} ${styles.cartButton}`}
                   onClick={(e) => {
@@ -222,29 +299,6 @@ export default function BooksListComponent() {
             </div>
           </div>
         ))}
-      </div>
-
-      <div className={styles.pagination}>
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          className={`${styles.button} ${styles.buttonPrev}`}
-          disabled={currentPage === 1}
-        >
-          ⬅ Back
-        </button>
-        <input
-          type="number"
-          value={currentPage}
-          onChange={(e) => setCurrentPage(parseInt(e.target.value, 10))}
-          className={styles.pageInput}
-          min="1"
-        />
-        <button
-          onClick={() => setCurrentPage((prev) => prev + 1)}
-          className={`${styles.button} ${styles.buttonNext}`}
-        >
-          Next ➡
-        </button>
       </div>
     </div>
   );

@@ -49,7 +49,7 @@ autor: <numer zdającego>
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Używamy lokalnego stanu
+  const [isAuthenticated, setIsAuthenticated] = useState(false); 
   const pathname = usePathname();
   const router = useRouter();
   const { user, isLoaded } = useUser();
@@ -68,12 +68,12 @@ export default function Navbar() {
   
       if (!user) {
         if (
-          pathname?.startsWith("/profile") || // Blokowanie wszystkich /profile/*
+          pathname?.startsWith("/profile") || 
           pathname === "/profile/cart" || 
           pathname === "/profile/dashboard"
         ) {
 
-          router.replace("/custom-404"); // Możesz zmienić na router.push("/custom-404") do testów
+          router.replace("/custom-404"); 
         }
       }
   

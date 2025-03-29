@@ -2,6 +2,17 @@
 import React, { useEffect, useState } from "react";
 import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 
+/************************************************
+komponent: Footer
+opis: Komponent stopki, wyświetlający dane kontaktowe, odnośniki do ważnych sekcji sklepu, ikony mediów społecznościowych oraz modale dla polityki prywatności i FAQ. Zawiera logikę do wyświetlania okien modalnych.
+pola:
+- isModalOpen - stan wskazujący, czy okno modalne jest otwarte
+- modalContent - stan przechowujący tytuł i treść wybranego modalnego okna
+metody:
+- openModal - funkcja otwierająca okno modalne z tytułem i treścią
+- closeModal - funkcja zamykająca okno modalne
+autor: <numer zdającego>
+************************************************/
 export function Footer() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ title: "", content: "" });

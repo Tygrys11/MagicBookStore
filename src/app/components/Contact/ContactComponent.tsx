@@ -1,18 +1,107 @@
-import styles from "../../styles/OtherPagesStyles/contact.module.css";
+"use client";
+import { useState } from "react";
 import { Buttons } from "../Buttons";
 import { ImagesComponent } from "../ImageComponent";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
+import { db } from "../../../firebase";
+import { collection, doc, setDoc, getDoc, addDoc } from "firebase/firestore";
+import { useUser } from "@clerk/clerk-react";
+import styles from "../../styles/OtherPagesStyles/contact.module.css";
 
 /************************************************
-klasa: ContactComponent
-opis: Komponent wyświetlający formularz kontaktowy, informacje o sklepie Magic Bookstore oraz dane kontaktowe, takie jak adres, godziny otwarcia, numer telefonu, e-mail i media społecznościowe.
-komponenty:
-- Buttons - komponent reprezentujący przycisk.
-- ImagesComponent - komponent wyświetlający obrazy.
+funkcja: ContactComponent
+opis: Komponent odpowiedzialny za wyświetlenie formularza kontaktowego oraz sekcji kontaktowych, umożliwiający użytkownikowi wysłanie wiadomości.
+pola:
+  formData - dane formularza (imię, email, wiadomość)
+  loading - stan ładowania wiadomości
+  messageStatus - komunikat dotyczący statusu wiadomości
 autor: <numer zdającego>
 ************************************************/
-
 export function ContactComponent() {
+  const { user, isSignedIn } = useUser();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [messageStatus, setMessageStatus] = useState<string>("");
+
+  /************************************************
+  funkcja: handleChange
+  opis: Funkcja obsługująca zmiany wartości w formularzu, aktualizując odpowiednie dane.
+  pola:
+    e - zdarzenie zmiany wartości w polu formularza
+  autor: <numer zdającego>
+  ************************************************/
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  /************************************************
+  funkcja: handleSubmit
+  opis: Funkcja obsługująca wysyłanie formularza, zapisująca dane w bazie danych Firebase.
+  pola:
+    e - zdarzenie wysyłania formularza
+  autor: <numer zdającego>
+  ************************************************/
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.name || !formData.email || !formData.message) {
+      setMessageStatus("Proszę wypełnić wszystkie pola formularza.");
+      setTimeout(() => setMessageStatus(""), 5000);
+      if (!isSignedIn) {
+        setMessageStatus("Proszę zalogować się, aby wysłać wiadomość.");
+        setTimeout(() => setMessageStatus(""), 5000);
+        return;
+      }
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const contactRef = doc(db, "contactUs", user.id);
+      const userDoc = await getDoc(contactRef);
+
+      if (!userDoc.exists()) {
+        await setDoc(contactRef, {
+          userId: user.id,
+          createdAt: new Date(),
+        });
+      }
+
+      const messagesRef = collection(contactRef, "messages");
+      const currentDate = new Date();
+      const messageId = currentDate.toISOString();
+
+      await addDoc(messagesRef, {
+        messageId: messageId,
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        timestamp: currentDate,
+      });
+
+      setMessageStatus("Twoja wiadomość została wysłana pomyślnie!");
+      setTimeout(() => setMessageStatus(""), 5000);
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error("Błąd podczas wysyłania wiadomości:", error);
+      setMessageStatus("Wystąpił błąd podczas wysyłania wiadomości.");
+      setTimeout(() => setMessageStatus(""), 5000);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div className={styles.admission}>
@@ -40,7 +129,7 @@ export function ContactComponent() {
           />
         </div>
         <div className={styles.text}>
-          <form className={styles.formContainer}>
+          <form className={styles.formContainer} onSubmit={handleSubmit}>
             <h4 className={styles.formTitle}>Please Contact Us</h4>
             <p>
               To reach us directly through our enchanted portal, simply fill out
@@ -49,18 +138,41 @@ export function ContactComponent() {
               answers and assistance to your every query.
             </p>
             <label>Name & Last Name</label>
-            <input type="text" name="namelastname" />
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              disabled={!isSignedIn}
+            />
             <br />
             <label>E-mail Address</label>
-            <input type="email" name="email" />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              disabled={!isSignedIn}
+            />
             <br />
             <label>Message</label>
-            <input type="text" name="message" />
+            <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              disabled={!isSignedIn}
+            />
 
             <div className={styles.buttonSend}>
-              <Buttons className={styles.send}>Send</Buttons>
+              <Buttons className={styles.send}>
+                {loading ? "Sending..." : "Send"}
+              </Buttons>
             </div>
             <br />
+
+            {messageStatus && (
+              <p className={styles.messageStatus}>{messageStatus}</p>
+            )}
           </form>
         </div>
       </div>
@@ -70,7 +182,6 @@ export function ContactComponent() {
       <div className={styles.locationContainer}>
         <h2 className={styles.locationTitle}>Our Stationary Magical Store</h2>
 
-        {/* 📷 Baner */}
         <div className={styles.locationBanner}>
           <ImagesComponent
             src="/assets/bannerStationary.jpg"
@@ -103,7 +214,7 @@ export function ContactComponent() {
             <p>
               <b>Email:</b>
               <a href="mailto:bookstore@magicalBooks.pl">
-              bookstore@magicalBooks.pl
+                bookstore@magicalBooks.pl
               </a>
             </p>
           </div>

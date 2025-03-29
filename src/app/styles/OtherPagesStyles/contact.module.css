@@ -146,7 +146,18 @@
     color: black;
 }
 
-.formContainer input:focus {
+.formContainer textarea {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 10px;
+    height: 150px;
+    border: 2px solid #27114c;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: border-color 0.3s ease-in-out;
+    color: black;
+}
+
+.formContainer input:focus, .formContainer textarea:focus{
     border-color: rgb(255, 234, 0);
     outline: none;
 }
